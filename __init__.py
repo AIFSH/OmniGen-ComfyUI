@@ -16,6 +16,18 @@ import numpy as np
 from PIL import Image
 from OmniGen import OmniGenPipeline
 
+class TextNode:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {"required": {"text": ("STRING", {"multiline": True, "dynamicPrompts": True})}}
+    RETURN_TYPES = ("TEXT",)
+    FUNCTION = "encode"
+
+    CATEGORY = "AIFSH_OmniGen"
+
+    def encode(self,text):
+        return (text, )
+
 class OmniGenNode:
     def __init__(self):
         if not osp.exists(osp.join(omnigen_dir,"model.safetensors")):
@@ -156,5 +168,6 @@ class OmniGenNode:
 
 
 NODE_CLASS_MAPPINGS = {
+    "PromptTextNode" : TextNode,
     "OmniGenNode": OmniGenNode
 }
