@@ -113,7 +113,9 @@ class OmniGenNode:
     def gen(self,prompt_text,height,width,num_inference_steps,guidance_scale,
             img_guidance_scale,max_input_image_size,separate_cfg_infer,offload_model,
             use_input_image_size_as_output,seed,image_1=None,image_2=None,image_3=None):
-        pipe = OmniGenPipeline.from_pretrained(omnigen_dir)
+        if not hasattr( self, "omnigen_pipe" ):
+            setattr( self, "omnigen_pipe", OmniGenPipeline.from_pretrained(omnigen_dir) )
+        pipe = getattr( self, "omnigen_pipe" )
         input_images = []
         os.makedirs(tmp_dir,exist_ok=True)
         if image_1 is not None:
